@@ -20,9 +20,11 @@
 #include "psen_scan/psen_scan_udp_interface.h"
 #include "psen_scan/laserscan.h"
 #include <memory>
-
 namespace psen_scan
 {
+
+const uint32_t safety_mask =0x1;
+const uint32_t warning_mask =0x64;
 // LCOV_EXCL_START
 class vScanner
 {

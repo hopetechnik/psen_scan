@@ -47,7 +47,11 @@ ROSScannerNode::ROSScannerNode(ros::NodeHandle& nh,
   {
     throw PSENScanFatalException("Nullpointer isn't a valid argument!");
   }
-  pub_ = nh_.advertise<sensor_msgs::LaserScan>(topic, 1);
+  ros::NodeHandle n; // Using a public node handle. Better not to have a private namespace for our laser topics.
+  pub_ = n.advertise<sensor_msgs::LaserScan>(topic, 1);
+  pub_output_data_ = n.advertise<std_msgs::Int32>("output_data",1);
+  pub_output_warning_ = n.advertise<std_msgs::Bool>("warning_data",1);
+  pub_output_safety_ = n.advertise<std_msgs::Bool>("safety_data",1);
 }
 
 /**
@@ -126,6 +130,13 @@ void ROSScannerNode::processingLoop()
       if (skip_counter == skip_)
       {
         pub_.publish(buildRosMessage(complete_scan));
+        std::vector<bool> data;
+        data.resize(2);
+        data[0]=complete_scan.is_safety_violated_;
+        data[1]=complete_scan.is_warning_violated_;
+        pub_output_safety_.publish(complete_scan.is_safety_violated_);
+        pub_output_warning_.publish(complete_scan.is_warning_violated_);
+        pub_output_data_.publish(int(complete_scan.laser_output_data_));
       }
     }
     catch (const CoherentMonitoringFramesException& e)

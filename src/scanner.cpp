@@ -372,7 +372,6 @@ LaserScan Scanner::getCompleteScan()
     firstrun = false;  // next run is the second run or higher
   } while (monitoring_frame.to_theta() != MAX_SCAN_ANGLE);
   scan.resolution_ = monitoring_frame.resolution_;
-
   auto begin_position = angle_start_ / scan.resolution_;
   if (begin_position > 0)
   {
@@ -384,7 +383,9 @@ LaserScan Scanner::getCompleteScan()
   {
     scan.measures_.erase(scan.measures_.end() - end_position, scan.measures_.end());
   }
-
+  scan.laser_output_data_ = monitoring_frame.output_state_area_.outputs_;
+  scan.is_safety_violated_ = bool(scan.laser_output_data_ & safety_mask);
+  scan.is_warning_violated_ = bool((scan.laser_output_data_ & warning_mask)>>6);
   return scan;
 }
 
