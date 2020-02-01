@@ -35,6 +35,9 @@ public:
   uint8_t resolution_;             /**< Distance of angle between the measurements in tenths of degree. */
   uint16_t const min_scan_angle_;  /**< Lowest  Angle the Scanner is scanning in tenths of degree.*/
   uint16_t const max_scan_angle_;  /**< Highest Angle the Scanner is scanning in tenths of degree.*/
+  bool is_safety_violated_;        /**< Safety violated data in bool*/
+  bool is_warning_violated_;       /**< Warning violated data in bool*/
+  uint16_t laser_output_data_;
 } LaserScan;
 }
 

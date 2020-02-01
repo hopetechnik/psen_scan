@@ -18,6 +18,8 @@
 
 #include "psen_scan/scanner.h"
 #include <sensor_msgs/LaserScan.h>
+#include <std_msgs/Int32.h>
+#include <std_msgs/Bool.h>
 #include <string>
 #include <ros/ros.h>
 
@@ -42,6 +44,9 @@ public:
 private:
   ros::NodeHandle nh_;                /**< ROS Node handler*/
   ros::Publisher pub_;                /**< ROS message publisher*/
+  ros::Publisher pub_output_data_;    /**< ROS message publisher*/
+  ros::Publisher pub_output_warning_; /**< ROS message publisher*/  
+  ros::Publisher pub_output_safety_;  /**< ROS message publisher*/    
   std::string frame_id_;              /**< Defines the name of the frame_id. Default is scanner.*/
   uint16_t skip_;                     /**< Skip certain number of frames. Reduces publish rate. */
   std::unique_ptr<vScanner> scanner_; /**< Points to an instance of the Scanner class.*/
